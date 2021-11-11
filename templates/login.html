@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://www.bootstrapdash.com/demo/login-template-free-1/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login Template</title>
+  <link href="{% static 'styles/css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'styles/materialdesignicons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/login.css' %}">
+</head>
+<body data-new-gr-c-s-check-loaded="14.1034.0" data-gr-ext-installed="">
+  <main>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6 login-section-wrapper">
+          <div class="brand-wrapper">
+            <img src="{% static 'images/logo.svg' %}" alt="logo" class="logo">
+          </div>
+          <div class="login-wrapper my-auto">
+            {% block content %}
+
+            <h1 class="login-title">Log in</h1>
+            <form action="/display/">
+              {% csrf_token %}
+
+              <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" class="form-control"  placeholder="Enter Your Username">
+                <div id="textError" style="color: red; font-style: italic; display: none;" class="pb-1">*Enter minimum 4 characters</div>
+              </div>
+              <div class="form-group mb-4">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="enter your passsword" >
+                <!-- <div id="passError" style="color: red; font-style: italic; display: none;" class="pb-1">*Enter minimum 4 characters</div>
+                        </div> -->
+              </div>
+              <input name="login" id="btnSubmit" class="btn btn-block login-btn" type="button" value="Login" >
+            </form>
+            <p class="login-wrapper-footer-text">Don't have an account? <a href="/signup/" class="text-reset">Register here</a></p>
+          </div>
+        </div>
+        <div class="col-sm-6 px-0 d-none d-sm-block">
+          <img src="{% static 'images/login.jpg' %}" alt="login image" class="login-img">
+          
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    $(document).ready(()=>{
+      $('#username').blur(function(){
+        var text = $(this).val()
+        if(text.length<4){
+          $("#textError").show()
+        }else{
+          $("#textError").hide()
+        }
+    }),
+    $('#password').blur(function(){
+      var pass = $(this).val()
+      if(pass.length<4){
+        $("#passError").show()
+      }else{
+        $("#passError").hide()
+      }
+    }),
+      $('#btnSubmit').click(()=>{
+        var username = $('#username').val()
+        var password = $('#password').val()
+        var data = {
+          'csrfmiddlewaretoken' : '{{csrf_token}}',
+          'username' : username,
+          'password' : password
+        }
+        
+        if(username == '' && password == ''){
+          alert("Please enter username and password")
+          $('#textError').show()
+        }else if(username == ''){
+          alert("Please enter username")
+        }else if(password == ''){
+          alert("Please enter password")
+        }else{
+          $.ajax({
+            url:'/',
+            method:'POST',
+            data: data,
+            dataType: 'json',
+            success:function(data){
+              if(data.success){
+                alert("User logged in")
+                window.location.replace('/')
+              }else{
+                alert("User is not authenticated")
+              }
+            }
+          })
+        }
+      })
+    })
+  </script>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration><div id="smartyContainer" style="position: absolute; top: 0px; right: 0px; line-height: initial; z-index: 2147483647; width: auto; font-size: initial;">
+
+</div>
+{% endblock %}
+</html>

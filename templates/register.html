@@ -1,0 +1,201 @@
+{% load static %}
+{% block content %}
+
+
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://colorlib.com/etc/regform/colorlib-regform-3/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Colorlib Templates">
+<meta name="author" content="Colorlib">
+<meta name="keywords" content="Colorlib Templates">
+
+<title>MisterShoppie | Signup</title>
+
+<link href="{% static 'styles/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
+<link href="{% static 'styles/font-awesome.min.css' %}" rel="stylesheet" media="all">
+
+
+<link href="{% static 'styles/select2.min.css' %}" rel="stylesheet" media="all">
+<!-- <link href="{% static 'styles/daterangepicker.css' %}" rel="stylesheet" media="all"> -->
+
+<link href="{% static 'styles/main.css' %}" rel="stylesheet" media="all">
+<meta name="robots" content="noindex, follow">
+</head>
+<body data-new-gr-c-s-check-loaded="14.1034.0" data-gr-ext-installed="">
+<div class="page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
+<div class="wrapper wrapper--w780">
+<div class="card card-3">
+<div class="card-heading">
+</div>
+<div class="card-body">
+<h2 class="title">Registration Info</h2>
+<form method="POST" action = "" name="myform">
+    {% csrf_token %}
+
+<div class="input-group">
+<input class="input--style-3" id="first_name" type="text" placeholder="First Name" name="first_name">
+</div>
+<div class="input-group">
+    <input class="input--style-3" type="text" placeholder="Last Name"  id="last_name" name="last_name">
+    </div>
+<div class="input-group">
+    <input class="input--style-3" type="email" id="email" placeholder="Email" name="email">
+   
+
+</div>
+<div class="input-group">
+<div class="rs-select2 js-select-simple select--no-search">
+<input class="input--style-3" id="username" type="text" placeholder="username" name="username">
+
+</div>
+</div>
+<div class="input-group">
+<input class="input--style-3" type="password" id="password1" placeholder="Password" name="password1">
+
+</div>
+<div class="input-group">
+<input class="input--style-3" type="password" id="password2" placeholder="Confirm Password" name="password2">
+<div id="passError2" style="color: red; font-style: italic; display: none;" class="pb-1">*Password is not matching</div>
+</div>
+<div class="p-t-10">
+<button class="btn btn--pill btn--green"  type="button" id="register_user">Submit</button>
+
+</div>
+</form>
+<a href="/">
+<button class="btn btn--pill btn--green" style="margin-top: 10px;" type="Button" >Login</button></a>
+</div>
+
+</div>
+</div>
+</div>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration><div id="smartyContainer" style="position: absolute; top: 0px; right: 0px; line-height: initial; z-index: 2147483647; width: auto; font-size: initial;">
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+    $(document).ready(()=>{
+      $('#username').blur(function(){
+        var text = $(this).val()
+        if(text.length<4){
+          $("#textError").show()
+        }else{
+          $("#textError").hide()
+        }
+    }),
+    $('#password1').blur(function(){
+      var pass = $(this).val()
+      if(pass.length<4){
+        $("#passError").show()
+      }else{
+        $("#passError").hide()
+      }
+    }),
+      $('#register_user').click(()=>{
+        var username = $('#username').val()
+        var password1 = $('#password1').val()
+        var password2 = $('#password2').val()
+        var email = $('#email').val()
+        var first_name = $('#first_name').val()
+        var last_name = $('#last_name').val()
+        var data = {
+          'csrfmiddlewaretoken' : '{{csrf_token}}',
+          'username' : username,
+          'password1' : password1,
+          'password2': password2,
+          'email':email,
+          'first_name':first_name,
+          'last_name':last_name
+        }
+        
+        if(username == '' && password1 == ''){
+          alert("Please enter a username and password")
+          $('#textError').show()
+        }else if(username == ''){
+          alert("Please enter a username")
+        }else if(password1 == ''){
+          alert("Please enter a password")
+        }
+        else if(password2 == ''){
+            alert("verify the password")
+          }
+          else if(email == ''){
+            alert("Please enter your email")
+          }
+
+          else if(first_name == ''){
+            alert("Please enter your first Name")
+          }
+          else if(last_name == ''){
+            alert("Please enter your last name")
+          }
+        
+        else{
+          $.ajax({
+            url:'/',
+            method:'POST',
+            data: data,
+            dataType: 'json',
+            success:function(data){
+              if(data.success){
+                alert("User registrared")
+                window.location.replace('/')
+              }else{
+                alert("User is not registrered")
+              }
+            }
+          })
+        }
+      })
+    })
+  </script>
+
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  $(document).ready(()=>{
+    $('#username').blur(function(){
+      var text = $(this).val()
+      if(/^[a-zA-Z0-9- ]*$/.test(text) == false) {
+          $("#illegalError").show()              
+      }else{
+          $("#illegalError").hide()              
+      }
+      if(text.length<4){
+        $("#textError").show()
+      }else{
+        $("#textError").hide()
+      }
+    }),
+    
+    $('#password1').blur(function(){
+      var pass = $(this).val()
+      if(pass.length<4){
+        $("#passError").show()
+      }else{
+        $("#passError").hide()
+      }
+    }),
+    $('#password2').on('input',function(){
+      var pass1 = $('#password1').val()
+      var pass2 = $('#password2').val()
+      if(pass1 != pass2){
+        $("#passError2").show()
+        $("#register_user").hide()
+      }else{
+        $("#passError2").hide()
+        $("#register_user").show()
+      }
+    })
+  })
+</script> -->
+{% endblock %}
+</html>
